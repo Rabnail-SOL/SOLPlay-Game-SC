@@ -95,7 +95,7 @@ pub struct Initialize<'info> {
     #[account(
         zero,
     )]
-    pool: Box<Account<'info, Pool>>,
+    pool: Box<Account<'info, PoolAccount>>,
 
     owner: Signer<'info>,
     
@@ -106,7 +106,7 @@ pub struct Initialize<'info> {
 #[instruction(id: String)]
 pub struct CreateGame<'info> {
     #[account(mut)]
-    pool: Account<'info, Pool>,
+    pool: Account<'info, PoolAccount>,
     #[account(
         init,
         payer = signer,
@@ -118,7 +118,7 @@ pub struct CreateGame<'info> {
         bump,
         space = 8 + 32 + 1 + 1 + 1 + 8 + 32 + 32 + 1 + 1 + 32 + 1 + 32 + 32
     )]
-    game: Box<Account<'info, Game>>,
+    game: Box<Account<'info, GameAccount>>,
     #[account(
         seeds = [
             pool.to_account_info().key.as_ref(),
@@ -128,6 +128,7 @@ pub struct CreateGame<'info> {
         bump,
     )]
     vault: UncheckedAccount<'info>,
+    #[account(mut)]
     signer: Signer<'info>,
     system_program: Program<'info, System>,
 }
@@ -135,12 +136,12 @@ pub struct CreateGame<'info> {
 #[derive(Accounts)]
 pub struct Deposit<'info> {
     #[account(mut)]
-    pool: Account<'info, Pool>,
+    pool: Account<'info, PoolAccount>,
     #[account(
         mut, 
         has_one = vault,
     )]
-    game: Box<Account<'info, Game>>,
+    game: Box<Account<'info, GameAccount>>,
     #[account(
         mut,
         seeds = [
@@ -176,14 +177,15 @@ pub struct Deposit<'info> {
         bump,
         space = 8 + 32 + 8 + 8 + 32
     )]
-    deposit: Box<Account<'info, Deposit>>,
+    deposit: Box<Account<'info, DepositAccount>>,
+    #[account(mut)]
     signer: Signer<'info>,
     // token_program: Program<'info, Token>,
     system_program: Program<'info, System>,
 }
 
 #[account]
-pub struct Pool {
+pub struct PoolAccount {
     pub game_count: u64,
     pub game_finished: String,
     pub nonce: u8,
@@ -193,7 +195,7 @@ pub struct Pool {
 
 #[account]
 #[derive(Default)]
-pub struct Game {
+pub struct GameAccount {
     pub vault: Pubkey,
     pub finished: bool,
     pub odd: u8,
@@ -212,14 +214,14 @@ pub struct Game {
 
 #[account]
 #[derive(Default)]
-pub struct Deposit {
+pub struct DepositAccount {
     depositor: Pubkey,
     deposit_date: u64,
     deposit_index: u64,
     game_id: String
 }
 
-#[error]
+#[error_code]
 pub enum ErrorCode {
     #[msg("Minimize deposit amount is 0.000001 SOL.")]
     MinDepositAmount,
