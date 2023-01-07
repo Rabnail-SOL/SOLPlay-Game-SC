@@ -184,7 +184,7 @@ describe("deposit-game", () => {
         userProgram.programId
     );
 
-    const gameObject = await userProgram.account.game.fetch(game);
+    const gameObject = await userProgram.account.gameAccount.fetch(game);
     const tx = await userProgram.methods.deposit().accounts({
         pool: poolPubkey,
         game,
