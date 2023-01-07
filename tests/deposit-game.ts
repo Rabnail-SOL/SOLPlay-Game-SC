@@ -21,6 +21,7 @@ describe("deposit-game", () => {
         ],
         program.programId
     );
+    console.log(await program.account.poolAccount.createInstruction(poolKeypair, ),)
     const tx = await program.rpc.initialize(nonce, {
       accounts: {
         authority: provider.wallet.publicKey,

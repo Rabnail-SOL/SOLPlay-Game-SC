@@ -86,14 +86,14 @@ pub struct Initialize<'info> {
     /// CHECK: pool authority. checked
     authority: UncheckedAccount<'info>,
 
-    // #[account(
-    //     seeds = [
-    //         pool.to_account_info().key.as_ref()
-    //     ],
-    //     bump = nonce,
-    // )]
-    // /// CHECK: pool signer. checked
-    // pool_signer: UncheckedAccount<'info>,
+    #[account(
+        seeds = [
+            pool.to_account_info().key.as_ref()
+        ],
+        bump = nonce,
+    )]
+    /// CHECK: pool signer. checked
+    pool_signer: UncheckedAccount<'info>,
 
     #[account(
         zero,
