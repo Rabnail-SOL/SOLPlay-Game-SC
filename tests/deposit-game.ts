@@ -184,6 +184,12 @@ describe("deposit-game", () => {
         userProgram.programId
     );
 
+    let contractLamports1 = (await provider.connection.getBalance(vault));
+    console.log("vault value: ", contractLamports1);
+    let adminLamports1 = (await provider.connection.getBalance(admin.publicKey));
+    console.log("admin value: ", adminLamports1);
+    let userLamports1 = (await provider.connection.getBalance(user.publicKey));
+    console.log("user value: ", userLamports1);
     const gameObject = await userProgram.account.gameAccount.fetch(game);
     const tx = await userProgram.methods.deposit().accounts({
         pool: poolPubkey,
