@@ -10,7 +10,7 @@ pub mod deposit_game {
     pub fn initialize(
                 ctx: Context<Initialize>, 
                 nonce: u8,
-                ) -> ProgramResult {
+                ) -> Result<()> {
         let pool = &mut ctx.accounts.pool;
         pool.authority = ctx.accounts.authority.key();
         pool.nonce = nonce;
@@ -20,7 +20,7 @@ pub mod deposit_game {
         Ok(())
     }
     
-    pub fn create_game(ctx: Context<CreateGame>, nonce: u8, vault_nonce: u8, id: String, odd: u8, players: u8, bid: u64) -> ProgramResult {
+    pub fn create_game(ctx: Context<CreateGame>, nonce: u8, vault_nonce: u8, id: String, odd: u8, players: u8, bid: u64) -> Result<()> {
         
         let game = &mut ctx.accounts.game;
         game.authority = ctx.accounts.pool.authority;
@@ -38,7 +38,7 @@ pub mod deposit_game {
         Ok(())
     }
 
-    pub fn deposit(ctx: Context<Deposit>) -> ProgramResult {
+    pub fn deposit(ctx: Context<Deposit>) -> Result<()> {
         let game = &mut ctx.accounts.game;
         let deposit = &mut ctx.accounts.deposit;
         if game.finished == true {
