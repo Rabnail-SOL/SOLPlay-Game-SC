@@ -83,6 +83,7 @@ pub mod deposit_game {
 #[derive(Accounts)]
 #[instruction(nonce: u8)]
 pub struct Initialize<'info> {
+    /// CHECK: pool authority. checked
     authority: UncheckedAccount<'info>,
 
     #[account(
@@ -91,6 +92,7 @@ pub struct Initialize<'info> {
         ],
         bump = nonce,
     )]
+    /// CHECK: pool signer. checked
     pool_signer: UncheckedAccount<'info>,
 
     #[account(
@@ -128,6 +130,7 @@ pub struct CreateGame<'info> {
         ],
         bump,
     )]
+    /// CHECK: deposit sol vault. checked
     vault: UncheckedAccount<'info>,
     #[account(mut)]
     signer: Signer<'info>,
@@ -166,6 +169,7 @@ pub struct Deposit<'info> {
         ],
         bump = pool.nonce,
     )]
+    /// CHECK: pool signer. checked
     pool_signer: UncheckedAccount<'info>,
     #[account(
         init,
