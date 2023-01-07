@@ -17,6 +17,11 @@ async function sendLamports(
           }
       )
   );
+  var signature = await anchor.web3.sendAndConfirmTransaction(
+    provider.connection,
+    tx,
+    [provider.wallet]
+  );
   await provider.send(tx);
 }
 
