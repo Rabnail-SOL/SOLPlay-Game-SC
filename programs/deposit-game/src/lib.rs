@@ -22,19 +22,19 @@ pub mod deposit_game {
     
     pub fn create_game(ctx: Context<CreateGame>, nonce: u8, vault_nonce: u8, id: String, odd: u8, players: u8, bid: u64) -> Result<()> {
         
-        // let game = &mut ctx.accounts.game;
-        // game.authority = ctx.accounts.pool.authority;
-        // game.finished = false;
-        // game.deposited = 0;
-        // game.odd = odd;
-        // game.players = players;
-        // game.bid = bid;
-        // game.vault = ctx.accounts.vault.key();
-        // game.creator = ctx.accounts.signer.key();
-        // game.nonce = nonce;
-        // game.vault_nonce = vault_nonce;
-        // game.fee_receiver = ctx.accounts.signer.key();
-        // game.id = id;
+        let game = &mut ctx.accounts.game;
+        game.authority = ctx.accounts.pool.authority;
+        game.finished = false;
+        game.deposited = 0;
+        game.odd = odd;
+        game.players = players;
+        game.bid = bid;
+        game.vault = ctx.accounts.vault.key();
+        game.creator = ctx.accounts.signer.key();
+        game.nonce = nonce;
+        game.vault_nonce = vault_nonce;
+        game.fee_receiver = ctx.accounts.signer.key();
+        game.id = id;
         Ok(())
     }
 
@@ -111,30 +111,30 @@ pub struct Initialize<'info> {
 #[derive(Accounts)]
 #[instruction(nonce: u8, vault_nonce: u8, id: String)]
 pub struct CreateGame<'info> {
-    // #[account(mut)]
-    // pool: Account<'info, PoolAccount>,
-    // #[account(
-    //     init,
-    //     payer = signer,
-    //     seeds = [
-    //         pool.key().as_ref(),
-    //         "game".as_bytes(),
-    //         id.as_bytes(),
-    //     ],
-    //     bump,
-    //     space = 8 + 32 + 1 + 1 + 1 + 8 + 32 + 32 + 1 + 1 + 32 + 1 + 32 + 32
-    // )]
-    // game: Box<Account<'info, GameAccount>>,
-    // #[account(
-    //     seeds = [
-    //         pool.key().as_ref(),
-    //         "vault".as_bytes(),
-    //         id.as_bytes(),
-    //     ],
-    //     bump,
-    // )]
-    /// CHECK: deposit sol vault. checked
-    // vault: UncheckedAccount<'info>,
+    #[account(mut)]
+    pool: Account<'info, PoolAccount>,
+    #[account(
+        init,
+        payer = signer,
+        seeds = [
+            pool.key().as_ref(),
+            "game".as_bytes(),
+            id.as_bytes(),
+        ],
+        bump,
+        space = 8 + 32 + 1 + 1 + 1 + 8 + 32 + 32 + 1 + 1 + 32 + 1 + 32 + 32
+    )]
+    game: Box<Account<'info, GameAccount>>,
+    #[account(
+        seeds = [
+            pool.key().as_ref(),
+            "vault".as_bytes(),
+            id.as_bytes(),
+        ],
+        bump,
+    )]
+    / CHECK: deposit sol vault. checked
+    vault: UncheckedAccount<'info>,
     #[account(mut)]
     signer: Signer<'info>,
     system_program: Program<'info, System>,
