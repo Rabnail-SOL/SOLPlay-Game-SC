@@ -113,21 +113,21 @@ pub struct Initialize<'info> {
 pub struct CreateGame<'info> {
     #[account(mut)]
     pool: Account<'info, PoolAccount>,
+    // #[account(
+    //     init,
+    //     payer = signer,
+    //     seeds = [
+    //         pool.key().as_ref(),
+    //         "game".as_bytes(),
+    //         id.as_bytes(),
+    //     ],
+    //     bump,
+    //     space = 8 + 32 + 1 + 1 + 1 + 8 + 32 + 32 + 1 + 1 + 32 + 1 + 32 + 32
+    // )]
+    // game: Box<Account<'info, GameAccount>>,
     #[account(
-        init,
-        payer = signer,
         seeds = [
             pool.key().as_ref(),
-            "game".as_bytes(),
-            id.as_bytes(),
-        ],
-        bump,
-        space = 8 + 32 + 1 + 1 + 1 + 8 + 32 + 32 + 1 + 1 + 32 + 1 + 32 + 32
-    )]
-    game: Box<Account<'info, GameAccount>>,
-    #[account(
-        seeds = [
-            pool.to_account_info().key.as_ref(),
             "vault".as_bytes(),
             id.as_bytes(),
         ],
