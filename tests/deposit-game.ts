@@ -21,24 +21,19 @@ describe("deposit-game", () => {
         ],
         program.programId
     );
-    console.log({
-      authority: provider.wallet.publicKey,
-      pool: poolKeypair.publicKey,
-      poolSigner: poolSigner,
-      owner: provider.wallet.publicKey,
-      systemProgram: anchor.web3.SystemProgram.programId,
-    })
-    const tx = await program.methods.initialize(nonce).accounts({
-      authority: provider.wallet.publicKey,
-      pool: poolKeypair.publicKey,
-      poolSigner: poolSigner,
-      owner: provider.wallet.publicKey,
-      systemProgram: anchor.web3.SystemProgram.programId,
-    })
-    // .signers([poolKeypair]).postInstructions([
-    //       await program.account.poolAccount.createInstruction(poolKeypair, ),
-    //   ])
-      .rpc();
+    const tx = await program.rpc.initialize(nonce, {
+      accounts: {
+        authority: provider.wallet.publicKey,
+        pool: poolKeypair.publicKey,
+        poolSigner: poolSigner,
+        owner: provider.wallet.publicKey,
+        systemProgram: anchor.web3.SystemProgram.programId,
+      },
+      signers: [poolKeypair, ],
+      instructions: [
+          await program.account.poolAccount.createInstruction(poolKeypair, ),
+      ],
+    });
     console.log("Your transaction signature", tx);
   });
 });
