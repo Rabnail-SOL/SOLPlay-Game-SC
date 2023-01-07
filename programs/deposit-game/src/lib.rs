@@ -11,11 +11,11 @@ pub mod deposit_game {
                 ctx: Context<Initialize>, 
                 nonce: u8,
                 ) -> Result<()> {
-        // let pool = &mut ctx.accounts.pool;
-        // pool.authority = ctx.accounts.authority.key();
-        // pool.nonce = nonce;
-        // pool.game_count = 0;
-        // pool.game_finished = "0".to_string();
+        let pool = &mut ctx.accounts.pool;
+        pool.authority = ctx.accounts.authority.key();
+        pool.nonce = nonce;
+        pool.game_count = 0;
+        pool.game_finished = "0".to_string();
         
         Ok(())
     }
@@ -118,7 +118,7 @@ pub struct CreateGame<'info> {
         payer = signer,
         seeds = [
             pool.key().as_ref(),
-            "odd_game".as_bytes(),
+            "game".as_bytes(),
             id.as_bytes(),
         ],
         bump,
@@ -128,7 +128,7 @@ pub struct CreateGame<'info> {
     #[account(
         seeds = [
             pool.to_account_info().key.as_ref(),
-            "odd_vault".as_bytes(),
+            "vault".as_bytes(),
             id.as_bytes(),
         ],
         bump,
@@ -153,7 +153,7 @@ pub struct Deposit<'info> {
         mut,
         seeds = [
             pool.key().as_ref(),
-            "odd_vault".as_bytes(),
+            "vault".as_bytes(),
             game.id.as_bytes(),
         ],
         bump = game.vault_nonce,
@@ -182,7 +182,7 @@ pub struct Deposit<'info> {
         payer = signer,
         seeds = [
             depositor.key().as_ref(),
-            "game".as_bytes(),
+            "deposit".as_bytes(),
             game.id.as_bytes(),
         ],
         bump,
