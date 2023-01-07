@@ -96,7 +96,9 @@ pub struct Initialize<'info> {
     pool_signer: UncheckedAccount<'info>,
 
     #[account(
-        zero,
+        init,
+        payer = owner,
+        space = 8 + 8 + 32 + 1 + 32
     )]
     pool: Box<Account<'info, PoolAccount>>,
 
