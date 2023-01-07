@@ -29,7 +29,7 @@ describe("deposit-game", () => {
       owner: provider.wallet.publicKey,
       systemProgram: anchor.web3.SystemProgram.programId,
     }).signers([poolKeypair]).instructions([
-          await program.account.pool.createInstruction(poolKeypair, ),
+          await program.account.poolAccount.createInstruction(poolKeypair, ),
       ]).rpc();
     console.log("Your transaction signature", tx);
   });
