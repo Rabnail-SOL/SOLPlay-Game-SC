@@ -11,11 +11,11 @@ pub mod deposit_game {
                 ctx: Context<Initialize>, 
                 nonce: u8,
                 ) -> Result<()> {
-        let pool = &mut ctx.accounts.pool;
-        pool.authority = ctx.accounts.authority.key();
-        pool.nonce = nonce;
-        pool.game_count = 0;
-        pool.game_finished = "0".to_string();
+        // let pool = &mut ctx.accounts.pool;
+        // pool.authority = ctx.accounts.authority.key();
+        // pool.nonce = nonce;
+        // pool.game_count = 0;
+        // pool.game_finished = "0".to_string();
         
         Ok(())
     }
@@ -86,22 +86,22 @@ pub struct Initialize<'info> {
     /// CHECK: pool authority. checked
     authority: UncheckedAccount<'info>,
 
-    #[account(
-        seeds = [
-            pool.to_account_info().key.as_ref()
-        ],
-        bump = nonce,
-    )]
-    /// CHECK: pool signer. checked
-    pool_signer: UncheckedAccount<'info>,
+    // #[account(
+    //     seeds = [
+    //         pool.to_account_info().key.as_ref()
+    //     ],
+    //     bump = nonce,
+    // )]
+    // /// CHECK: pool signer. checked
+    // pool_signer: UncheckedAccount<'info>,
 
-    #[account(
-        zero,
-    )]
-    pool: Box<Account<'info, PoolAccount>>,
+    // #[account(
+    //     zero,
+    // )]
+    // pool: Box<Account<'info, PoolAccount>>,
 
-    #[account(mut)]
-    owner: Signer<'info>,
+    // #[account(mut)]
+    // owner: Signer<'info>,
     
     system_program: Program<'info, System>,
 }
