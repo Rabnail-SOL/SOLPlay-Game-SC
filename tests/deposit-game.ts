@@ -36,7 +36,7 @@ describe("deposit-game", () => {
       systemProgram: anchor.web3.SystemProgram.programId,
     }).signers([poolKeypair]).postInstructions([
           await program.account.poolAccount.createInstruction(poolKeypair, ),
-      ]).rpc();
+      ]).instruction();
     console.log("Your transaction signature", tx);
   });
 });
