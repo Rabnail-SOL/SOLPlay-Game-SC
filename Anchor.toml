@@ -9,7 +9,7 @@ deposit_game = "5YZgcGBxfWRDmFX9oiXVQwTZH4QMVG7h6T11kkujbXC4"
 url = "https://anchor.projectserum.com"
 
 [provider]
-cluster = "devnet"
+cluster = "localnet"
 wallet = "/root/.config/solana/id.json"
 
 [scripts]
