@@ -111,8 +111,8 @@ pub struct Initialize<'info> {
 #[derive(Accounts)]
 #[instruction(id: String)]
 pub struct CreateGame<'info> {
-    #[account(mut)]
-    pool: Account<'info, PoolAccount>,
+    // #[account(mut)]
+    // pool: Account<'info, PoolAccount>,
     // #[account(
     //     init,
     //     payer = signer,
