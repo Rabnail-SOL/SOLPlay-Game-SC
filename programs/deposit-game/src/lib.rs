@@ -125,16 +125,16 @@ pub struct CreateGame<'info> {
     //     space = 8 + 32 + 1 + 1 + 1 + 8 + 32 + 32 + 1 + 1 + 32 + 1 + 32 + 32
     // )]
     // game: Box<Account<'info, GameAccount>>,
-    #[account(
-        seeds = [
-            pool.key().as_ref(),
-            "vault".as_bytes(),
-            id.as_bytes(),
-        ],
-        bump,
-    )]
+    // #[account(
+    //     seeds = [
+    //         pool.key().as_ref(),
+    //         "vault".as_bytes(),
+    //         id.as_bytes(),
+    //     ],
+    //     bump,
+    // )]
     /// CHECK: deposit sol vault. checked
-    vault: UncheckedAccount<'info>,
+    // vault: UncheckedAccount<'info>,
     #[account(mut)]
     signer: Signer<'info>,
     system_program: Program<'info, System>,
