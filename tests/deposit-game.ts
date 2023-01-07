@@ -212,4 +212,78 @@ describe("deposit-game", () => {
     // assert.equal(contractLamports, amount);
   })
 
+  it('deposit2', async () => {
+    const user = user2;
+    const envProvider = anchor.AnchorProvider.env();
+    const p = new anchor.AnchorProvider(envProvider.connection, new anchor.Wallet(user), envProvider.opts);
+
+    const userProgram = new anchor.Program(program.idl, program.programId, p);
+
+    const [
+        _poolSigner,
+        _nonce,
+    ] = anchor.web3.PublicKey.findProgramAddressSync(
+        [
+          poolPubkey.toBuffer(),
+        ],
+        userProgram.programId
+    );
+
+    const [
+        game,
+    ] = anchor.web3.PublicKey.findProgramAddressSync(
+        [
+          poolPubkey.toBuffer(), Buffer.from("game"), Buffer.from(gameId1)
+        ],
+        userProgram.programId
+    );
+
+    const [
+        vault,
+    ] = anchor.web3.PublicKey.findProgramAddressSync(
+        [
+          poolPubkey.toBuffer(), Buffer.from("vault"), Buffer.from(gameId1)
+        ],
+        userProgram.programId
+    );
+
+    const [
+      deposit,
+    ] = anchor.web3.PublicKey.findProgramAddressSync(
+        [
+          user.publicKey.toBuffer(), Buffer.from("deposit"), Buffer.from(gameId1)
+        ],
+        userProgram.programId
+    );
+
+    let contractLamports1 = (await provider.connection.getBalance(vault));
+    console.log("vault value: ", contractLamports1);
+    let adminLamports1 = (await provider.connection.getBalance(admin.publicKey));
+    console.log("admin value: ", adminLamports1);
+    let userLamports1 = (await provider.connection.getBalance(user.publicKey));
+    console.log("user value: ", userLamports1);
+    const gameObject = await userProgram.account.gameAccount.fetch(game);
+    const tx = await userProgram.methods.deposit().accounts({
+        pool: poolPubkey,
+        game,
+        vault,
+        depositor: user.publicKey,
+        feeReceiver: gameObject.feeReceiver,
+        poolSigner: _poolSigner,
+        deposit,
+        signer: user.publicKey,
+        systemProgram: anchor.web3.SystemProgram.programId,
+      }).rpc();
+
+    let contractLamports = (await provider.connection.getBalance(vault));
+    console.log("vault value: ", contractLamports);
+    let adminLamports = (await provider.connection.getBalance(admin.publicKey));
+    console.log("admin value: ", adminLamports);
+    let userLamports = (await provider.connection.getBalance(user.publicKey));
+    console.log("user value: ", userLamports);
+    // assert.equal(contractLamports, amount);
+    const gameObject1 = await userProgram.account.gameAccount.fetch(game);
+    console.log("game finished: ", gameObject1.finished)
+  })
+
 });
