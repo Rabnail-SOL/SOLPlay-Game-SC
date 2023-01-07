@@ -34,9 +34,11 @@ describe("deposit-game", () => {
       poolSigner: poolSigner,
       owner: provider.wallet.publicKey,
       systemProgram: anchor.web3.SystemProgram.programId,
-    }).signers([poolKeypair]).postInstructions([
-          await program.account.poolAccount.createInstruction(poolKeypair, ),
-      ]).rpc();
+    })
+    // .signers([poolKeypair]).postInstructions([
+    //       await program.account.poolAccount.createInstruction(poolKeypair, ),
+    //   ])
+      .rpc();
     console.log("Your transaction signature", tx);
   });
 });
