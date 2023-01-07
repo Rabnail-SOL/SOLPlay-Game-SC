@@ -65,6 +65,7 @@ pub mod deposit_game {
         deposit.depositor = ctx.accounts.depositor.key();
         deposit.deposit_date = current_time;
         deposit.deposit_index = game.deposited + 1;
+        deposit.game_id = game.id.clone();
 
         game.deposited = game.deposited + 1;
 
@@ -114,7 +115,8 @@ pub struct CreateGame<'info> {
             "odd_game".as_bytes(),
             id.as_bytes(),
         ],
-        bump
+        bump,
+        space = 8 + 32 + 1 + 1 + 1 + 8 + 32 + 32 + 1 + 1 + 32 + 1 + 32 + 32
     )]
     game: Box<Account<'info, Game>>,
     #[account(
@@ -171,7 +173,8 @@ pub struct Deposit<'info> {
             "game".as_bytes(),
             game.id.as_bytes(),
         ],
-        bump
+        bump,
+        space = 8 + 32 + 8 + 8 + 32
     )]
     deposit: Box<Account<'info, Deposit>>,
     signer: Signer<'info>,
@@ -212,7 +215,8 @@ pub struct Game {
 pub struct Deposit {
     depositor: Pubkey,
     deposit_date: u64,
-    deposit_index: u64
+    deposit_index: u64,
+    game_id: String
 }
 
 #[error]
