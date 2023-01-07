@@ -176,7 +176,7 @@ pub struct Deposit<'info> {
             game.id.as_bytes(),
         ],
         bump,
-        space = 8 + 32 + 8 + 8 + 32
+        space = 8 + 32 + 8 + 1 + 32
     )]
     deposit: Box<Account<'info, DepositAccount>>,
     #[account(mut)]
@@ -218,7 +218,7 @@ pub struct GameAccount {
 pub struct DepositAccount {
     depositor: Pubkey,
     deposit_date: u64,
-    deposit_index: u64,
+    deposit_index: u8,
     game_id: String
 }
 
