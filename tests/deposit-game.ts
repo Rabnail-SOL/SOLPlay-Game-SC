@@ -65,7 +65,7 @@ describe("deposit-game", () => {
     const [
         poolSigner,
         nonce,
-    ] = await anchor.web3.PublicKey.findProgramAddressSync(
+    ] = anchor.web3.PublicKey.findProgramAddressSync(
         [
           poolPubkey.toBuffer(),
         ],
@@ -105,7 +105,7 @@ describe("deposit-game", () => {
     const [
         vault,
         nonceVault,
-    ] = await anchor.web3.PublicKey.findProgramAddressSync(
+    ] = anchor.web3.PublicKey.findProgramAddressSync(
         [
           poolPubkey.toBuffer(), Buffer.from("vault"), Buffer.from(gameId1)
         ],
@@ -150,7 +150,7 @@ describe("deposit-game", () => {
     const [
         _poolSigner,
         _nonce,
-    ] = await anchor.web3.PublicKey.findProgramAddressSync(
+    ] = anchor.web3.PublicKey.findProgramAddressSync(
         [
           poolPubkey.toBuffer(),
         ],
@@ -159,7 +159,7 @@ describe("deposit-game", () => {
 
     const [
         game,
-    ] = await anchor.web3.PublicKey.findProgramAddressSync(
+    ] = anchor.web3.PublicKey.findProgramAddressSync(
         [
           poolPubkey.toBuffer(), Buffer.from("game"), Buffer.from(gameId1)
         ],
@@ -168,7 +168,7 @@ describe("deposit-game", () => {
 
     const [
         vault,
-    ] = await anchor.web3.PublicKey.findProgramAddressSync(
+    ] = anchor.web3.PublicKey.findProgramAddressSync(
         [
           poolPubkey.toBuffer(), Buffer.from("vault"), Buffer.from(gameId1)
         ],
@@ -177,7 +177,7 @@ describe("deposit-game", () => {
 
     const [
       deposit,
-    ] = await anchor.web3.PublicKey.findProgramAddressSync(
+    ] = anchor.web3.PublicKey.findProgramAddressSync(
         [
           user.publicKey.toBuffer(), Buffer.from("deposit"), Buffer.from(gameId1)
         ],

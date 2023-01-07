@@ -109,7 +109,7 @@ pub struct Initialize<'info> {
 }
 
 #[derive(Accounts)]
-#[instruction(id: String)]
+#[instruction(nonce: u8, vault_nonce: u8, id: String)]
 pub struct CreateGame<'info> {
     // #[account(mut)]
     // pool: Account<'info, PoolAccount>,
