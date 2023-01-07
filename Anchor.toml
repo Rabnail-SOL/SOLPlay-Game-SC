@@ -1,13 +1,15 @@
 [features]
 seeds = false
 [programs.localnet]
-deposit_game = "Fg6PaFpoGXkYsidMpWTK6W2BeZ7FEfcYkg476zPFsLnS"
+deposit_game = "5YZgcGBxfWRDmFX9oiXVQwTZH4QMVG7h6T11kkujbXC4"
+[programs.devnet]
+deposit_game = "5YZgcGBxfWRDmFX9oiXVQwTZH4QMVG7h6T11kkujbXC4"
 
 [registry]
 url = "https://anchor.projectserum.com"
 
 [provider]
-cluster = "localnet"
+cluster = "devnet"
 wallet = "/root/.config/solana/id.json"
 
 [scripts]

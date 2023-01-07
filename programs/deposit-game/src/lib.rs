@@ -1,7 +1,7 @@
 use anchor_lang::prelude::*;
 use anchor_lang::solana_program::{clock};
 
-declare_id!("Fg6PaFpoGXkYsidMpWTK6W2BeZ7FEfcYkg476zPFsLnS");
+declare_id!("5YZgcGBxfWRDmFX9oiXVQwTZH4QMVG7h6T11kkujbXC4");
 
 #[program]
 pub mod deposit_game {
