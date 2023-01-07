@@ -7,6 +7,7 @@ describe("deposit-game", () => {
   anchor.setProvider(anchor.AnchorProvider.env());
   const provider = anchor.getProvider();
   let poolKeypair = anchor.web3.Keypair.generate();
+  let poolPubkey = poolKeypair.publicKey;
 
   const program = anchor.workspace.DepositGame as Program<DepositGame>;
 
