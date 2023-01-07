@@ -95,10 +95,10 @@ pub struct Initialize<'info> {
     // /// CHECK: pool signer. checked
     // pool_signer: UncheckedAccount<'info>,
 
-    // #[account(
-    //     zero,
-    // )]
-    // pool: Box<Account<'info, PoolAccount>>,
+    #[account(
+        zero,
+    )]
+    pool: Box<Account<'info, PoolAccount>>,
 
     #[account(mut)]
     owner: Signer<'info>,

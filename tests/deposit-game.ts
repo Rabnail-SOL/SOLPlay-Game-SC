@@ -24,7 +24,7 @@ describe("deposit-game", () => {
     const tx = await program.rpc.initialize(nonce, {
       accounts: {
         authority: provider.wallet.publicKey,
-        pool: poolKeypair.publicKey,
+        pool: poolPubkey,
         poolSigner: poolSigner,
         owner: provider.wallet.publicKey,
         systemProgram: anchor.web3.SystemProgram.programId,
