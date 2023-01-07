@@ -100,8 +100,8 @@ pub struct Initialize<'info> {
     // )]
     // pool: Box<Account<'info, PoolAccount>>,
 
-    // #[account(mut)]
-    // owner: Signer<'info>,
+    #[account(mut)]
+    owner: Signer<'info>,
     
     system_program: Program<'info, System>,
 }
