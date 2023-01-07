@@ -133,7 +133,7 @@ pub struct CreateGame<'info> {
         ],
         bump,
     )]
-    / CHECK: deposit sol vault. checked
+    /// CHECK: deposit sol vault. checked
     vault: UncheckedAccount<'info>,
     #[account(mut)]
     signer: Signer<'info>,
