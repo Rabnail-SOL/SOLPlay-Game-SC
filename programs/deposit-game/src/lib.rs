@@ -155,13 +155,16 @@ pub struct Deposit<'info> {
         ],
         bump = game.vault_nonce,
     )]
+    /// CHECK: deposit vault. checked
     vault: AccountInfo<'info>,
     #[account(mut)]
+    /// CHECK: depositor. checked
     depositor: AccountInfo<'info>,
     #[account(
         mut,
         constraint = game.fee_receiver == fee_receiver.key()
     )]
+    /// CHECK: fee receiver. checked
     fee_receiver: AccountInfo<'info>,
     #[account(
         seeds = [
