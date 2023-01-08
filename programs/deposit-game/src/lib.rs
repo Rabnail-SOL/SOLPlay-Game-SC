@@ -65,7 +65,7 @@ pub mod deposit_game {
         let current_time = clock::Clock::get().unwrap().unix_timestamp.try_into().unwrap();
         deposit.depositor = ctx.accounts.depositor.key();
         deposit.deposit_date = current_time;
-        deposit.deposit_index = game.deposited + 1;
+        deposit.deposit_index = game.deposited;
         deposit.game_id = game.id.clone();
 
         game.deposited = game.deposited + 1;
@@ -78,6 +78,70 @@ pub mod deposit_game {
         Ok(())
     }
 
+    pub fn update_result_hash(ctx: Context<UpdateResultHash>, hash: String) -> Result<()> {
+        let game = &mut ctx.accounts.game;
+        game.last_hash = hash.as_bytes();
+        Ok(())
+    }
+
+    pub fn distribute(ctx: Context<Distribute>) -> Result<()> {
+        let game = &mut ctx.accounts.game;
+        let deposit = &mut ctx.accounts.deposit;
+
+        let mut string_flag: u8 = game.last_hash[30].checked_div(16).unwrap();
+        msg!("string_flag: {:?}", string_flag);
+        if string_flag > 9 {
+            for i in 1..31 {
+                string_flag = game.last_hash[30 - i] % 16;
+                if string_flag <= 9 {
+                    break;
+                }
+
+                string_flag = game.last_hash[30 - i].checked_div(16).unwrap();
+                if string_flag <= 9 {
+                    break;
+                }
+            }
+        }
+
+        msg!("string_flag: {:?}", string_flag);
+        let mut flag = false;
+        for i in 0..game.players {
+            if i % game.odd == 0 {
+                if string_flag == deposit.deposit_index {
+                    flag = true;
+                    break;
+                }
+                if string_flag + game.odd > game.players - 1 {
+                    string_flag = string_flag + game.odd - game.players;
+                } else {
+                    string_flag = string_flag + game.odd;
+                }
+            }
+        }
+
+        if flag == false {
+            return Err(ErrorCode::IncorrectWinner.into());
+        }
+
+        let total_rewards_amount = game.bid.checked_mul(game.players).unwrap()
+                                        .checked_mul(97 as u64).unwrap()
+                                        .checked_div(100 as u64).unwrap();
+        let distribute_amount = total_rewards_amount.checked_div(
+                                            game.players.checked_div(game.odd).unwrap()
+                                        ).unwrap();
+        
+        let ix = anchor_lang::solana_program::system_instruction::transfer(
+                                    &ctx.accounts.vault.key(), 
+                                    &ctx.accounts.receiver.key(), 
+                                    distribute_amount);
+        anchor_lang::solana_program::program::invoke(&ix, &[
+                                                                ctx.accounts.vault.to_account_info(), 
+                                                                ctx.accounts.receiver.to_account_info(), 
+                                                            ])?;
+
+        Ok(())
+    }
 }
 
 #[derive(Accounts)]
@@ -195,6 +259,69 @@ pub struct Deposit<'info> {
     system_program: Program<'info, System>,
 }
 
+#[derive(Accounts)]
+pub struct UpdateResultHash<'info> {
+    pool: Account<'info, PoolAccount>,
+    #[account(
+        mut, 
+        seeds = [
+            pool.key().as_ref(),
+            "game".as_bytes(),
+            game.id.as_bytes(),
+        ],
+        bump,
+        constraint = game.creator == signer.key(),
+    )]
+    game: Box<Account<'info, GameAccount>>,
+    #[account(mut)]
+    signer: Signer<'info>,
+    // token_program: Program<'info, Token>,
+    system_program: Program<'info, System>,
+}
+
+#[derive(Accounts)]
+pub struct Distribute<'info> {
+    pool: Account<'info, PoolAccount>,
+    #[account(
+        mut, 
+        seeds = [
+            pool.key().as_ref(),
+            "game".as_bytes(),
+            game.id.as_bytes(),
+        ],
+        bump,
+        constraint = game.creator == signer.key(),
+    )]
+    game: Box<Account<'info, GameAccount>>,
+    #[account(
+        mut,
+        seeds = [
+            pool.key().as_ref(),
+            "vault".as_bytes(),
+            game.id.as_bytes(),
+        ],
+        bump = game.vault_nonce,
+    )]
+    /// CHECK: deposit vault. checked
+    vault: AccountInfo<'info>,
+    #[account(mut)]
+    /// CHECK: receiver. checked
+    receiver: AccountInfo<'info>,
+    #[account(
+        seeds = [
+            receiver.key().as_ref(),
+            "deposit".as_bytes(),
+            game.id.as_bytes(),
+        ],
+        bump,
+    )]
+    deposit: Box<Account<'info, DepositAccount>>,
+    #[account(mut)]
+    signer: Signer<'info>,
+    // token_program: Program<'info, Token>,
+    system_program: Program<'info, System>,
+}
+
 #[account]
 pub struct PoolAccount {
     pub game_count: u64,
@@ -242,4 +369,6 @@ pub enum ErrorCode {
     DepositorNotMatch,
     #[msg("Finished Game.")]
     FinishedGame,
+    #[msg("This winner is not correct.")]
+    IncorrectWinner,
 }
