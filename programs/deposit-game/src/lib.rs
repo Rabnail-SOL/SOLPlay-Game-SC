@@ -87,17 +87,18 @@ pub mod deposit_game {
     pub fn distribute(ctx: Context<Distribute>) -> Result<()> {
         let game = &mut ctx.accounts.game;
         let deposit = &mut ctx.accounts.deposit;
+        let last_hash = game.last_hash.as_bytes();
 
-        let mut string_flag: u8 = game.last_hash[30].checked_div(16).unwrap();
+        let mut string_flag: u8 = last_hash[30].checked_div(16).unwrap();
         msg!("string_flag: {:?}", string_flag);
         if string_flag > 9 {
             for i in 1..31 {
-                string_flag = game.last_hash[30 - i] % 16;
+                string_flag = last_hash[30 - i] % 16;
                 if string_flag <= 9 {
                     break;
                 }
 
-                string_flag = game.last_hash[30 - i].checked_div(16).unwrap();
+                string_flag = last_hash[30 - i].checked_div(16).unwrap();
                 if string_flag <= 9 {
                     break;
                 }
