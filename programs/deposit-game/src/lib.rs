@@ -124,11 +124,11 @@ pub mod deposit_game {
             return Err(ErrorCode::IncorrectWinner.into());
         }
 
-        let total_rewards_amount = game.bid.checked_mul(game.players).unwrap()
+        let total_rewards_amount = game.bid.checked_mul(game.players as u64).unwrap()
                                         .checked_mul(97 as u64).unwrap()
                                         .checked_div(100 as u64).unwrap();
         let distribute_amount = total_rewards_amount.checked_div(
-                                            game.players.checked_div(game.odd).unwrap()
+                                            game.players.checked_div(game.odd).unwrap() as u64
                                         ).unwrap();
         
         let ix = anchor_lang::solana_program::system_instruction::transfer(
@@ -345,7 +345,7 @@ pub struct GameAccount {
     pub nonce: u8,
     pub id: String,
     pub vault_nonce: u8,
-    pub last_hash: [u8; 32],
+    pub last_hash: &[u8],
     /// Priviledged account.
     pub authority: Pubkey,
 }
