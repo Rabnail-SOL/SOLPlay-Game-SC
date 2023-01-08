@@ -80,7 +80,7 @@ pub mod deposit_game {
 
     pub fn update_result_hash(ctx: Context<UpdateResultHash>, hash: String) -> Result<()> {
         let game = &mut ctx.accounts.game;
-        game.last_hash = hash.as_bytes();
+        game.last_hash = hash;
         Ok(())
     }
 
@@ -345,7 +345,7 @@ pub struct GameAccount {
     pub nonce: u8,
     pub id: String,
     pub vault_nonce: u8,
-    pub last_hash: &[u8],
+    pub last_hash: String,
     /// Priviledged account.
     pub authority: Pubkey,
 }
